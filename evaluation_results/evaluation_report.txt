@@ -1,0 +1,97 @@
+CLASSIFICATION EVALUATION REPORT
+==================================================
+
+OVERALL PERFORMANCE METRICS
+------------------------------
+Total Samples: 1000
+Number of Classes: 10
+Accuracy: 0.9710
+Macro F1 Score: 0.9536
+Weighted F1 Score: 0.9720
+Macro Precision: 0.9554
+Macro Recall: 0.9636
+Cohen's Kappa: 0.9418
+
+PER-CLASS PERFORMANCE
+------------------------------
+
+Animal Feed:
+  Precision: 1.0000
+  Recall: 1.0000
+  F1-Score: 1.0000
+  Support: 5.0
+
+Aquatic Animal:
+  Precision: 1.0000
+  Recall: 1.0000
+  F1-Score: 1.0000
+  Support: 1.0
+
+Clinical:
+  Precision: 0.9928
+  Recall: 0.9986
+  F1-Score: 0.9957
+  Support: 690.0
+
+Environmental:
+  Precision: 1.0000
+  Recall: 1.0000
+  F1-Score: 1.0000
+  Support: 38.0
+
+Food:
+  Precision: 0.9917
+  Recall: 0.8623
+  F1-Score: 0.9225
+  Support: 138.0
+
+Laboratory:
+  Precision: 1.0000
+  Recall: 1.0000
+  F1-Score: 1.0000
+  Support: 9.0
+
+Livestock:
+  Precision: 0.9268
+  Recall: 1.0000
+  F1-Score: 0.9620
+  Support: 38.0
+
+Nd:
+  Precision: 1.0000
+  Recall: 0.7750
+  F1-Score: 0.8732
+  Support: 40.0
+
+Poultry:
+  Precision: 0.6429
+  Recall: 1.0000
+  F1-Score: 0.7826
+  Support: 36.0
+
+Wild Animal:
+  Precision: 1.0000
+  Recall: 1.0000
+  F1-Score: 1.0000
+  Support: 5.0
+
+
+CONFIDENCE ANALYSIS
+------------------------------
+High Confidence: 964 samples (96.4%)
+Low Confidence: 27 samples (2.7%)
+Medium Confidence: 9 samples (0.9%)
+
+Accuracy by Confidence Level:
+  High: 0.9741 (n=964)
+  Medium: 0.5556 (n=9)
+  Low: 1.0000 (n=27)
+
+
+MOST COMMON MISCLASSIFICATIONS
+------------------------------
+  Food → Poultry: 19 cases
+  Nd → Clinical: 5 cases
+  Nd → Livestock: 3 cases
+  Clinical → Poultry: 1 cases
+  Nd → Food: 1 cases

@@ -1,0 +1,13 @@
+openai==1.44.0
+requests==2.31.0
+pandas==2.1.4
+biopython==1.84
+python-dotenv==1.0.0
+numpy==1.26.2
+scikit-learn==1.3.2
+pytest==7.4.3
+# Additional requirements for BigQuery functionality
+google-cloud-bigquery==3.22.0
+google-auth==2.29.0
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
