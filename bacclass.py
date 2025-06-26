@@ -29,7 +29,6 @@ except ImportError as e:
 # Add the bacclass package to the path
 sys.path.insert(0, str(Path(__file__).parent))
 
-
 app = typer.Typer(
     name="bacclass",
     help="Bacterial Biosample Classification System - Extract data from BigQuery and classify using AI",
@@ -201,6 +200,7 @@ def test_classifier(
     # Run evaluation
     try:
         results = evaluate_classification_results(str(input_file), str(output_dir))
+
         console.print("\n" + "="*60, style="bold blue")
         console.print("EVALUATION SUMMARY", style="bold green")
         console.print("="*60, style="bold blue")

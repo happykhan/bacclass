@@ -14,18 +14,17 @@ from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
     classification_report, confusion_matrix, cohen_kappa_score
 )
-import logging
 from typing import Dict
 from pathlib import Path
 import warnings
-
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+from rich.console import Console
 
 # Set style for plots
 plt.style.use('seaborn-v0_8')
 sns.set_palette("husl")
+
+# Initialize console for rich output
+console = Console()
 
 def load_classification_results(csv_path: str) -> pd.DataFrame:
     """
@@ -39,17 +38,16 @@ def load_classification_results(csv_path: str) -> pd.DataFrame:
     """
     try:
         df = pd.read_csv(csv_path)
-        logger.info(f"Loaded {len(df)} classification results from {csv_path}")
+        console.print(f"Loaded {len(df)} classification results from {csv_path}")
         
         # Ensure required columns exist
         required_cols = ['CLASSIFICATION', 'CONFIDENCE', 'REASONING', 'CATEGORY_NUMBER', 'CORRECT_CLASSIFICATION']
         missing_cols = [col for col in required_cols if col not in df.columns]
         if missing_cols:
-            logger.warning(f"Missing columns: {missing_cols}")
-            
+            console.print(f"[bold red]Missing columns:[/bold red] [yellow]{missing_cols}[/yellow]")
         return df
     except Exception as e:
-        logger.error(f"Error loading classification results: {e}")
+        console.print(f"[bold red]Error loading classification results:[/bold red] {e}")
         raise
 
 def clean_classification_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -68,7 +66,7 @@ def clean_classification_data(df: pd.DataFrame) -> pd.DataFrame:
     # Remove rows where either classification is missing
     initial_len = len(df_clean)
     df_clean = df_clean.dropna(subset=['CLASSIFICATION', 'CORRECT_CLASSIFICATION'])
-    logger.info(f"Removed {initial_len - len(df_clean)} rows with missing classifications")
+    console.print(f"[blue]Info:[/blue] Removed {initial_len - len(df_clean)} rows with missing classifications")
     
     # Standardize classification labels (remove extra spaces, capitalize)
     df_clean['CLASSIFICATION'] = df_clean['CLASSIFICATION'].astype(str).str.strip().str.title()
@@ -77,7 +75,7 @@ def clean_classification_data(df: pd.DataFrame) -> pd.DataFrame:
     # Handle error classifications
     error_mask = df_clean['CLASSIFICATION'].str.contains('Error', case=False, na=False)
     if error_mask.any():
-        logger.warning(f"Found {error_mask.sum()} error classifications")
+        console.print(f"[bold yellow]Warning:[/bold yellow] Found {error_mask.sum()} error classifications")
         
     return df_clean
 
@@ -189,7 +187,7 @@ def plot_confusion_matrix(df: pd.DataFrame, output_dir: str = "plots") -> str:
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    logger.info(f"Confusion matrix saved to {output_path}")
+    console.print(f"[green]✓[/green] Confusion matrix saved to {output_path}")
     return str(output_path)
 
 def plot_classification_performance(metrics: Dict, output_dir: str = "plots") -> str:
@@ -235,7 +233,7 @@ def plot_classification_performance(metrics: Dict, output_dir: str = "plots") ->
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    logger.info(f"Performance metrics plot saved to {output_path}")
+    console.print(f"[green]✓[/green] Performance metrics plot saved to {output_path}")
     return str(output_path)
 
 def plot_per_class_f1_scores(metrics: Dict, output_dir: str = "plots") -> str:
@@ -278,7 +276,7 @@ def plot_per_class_f1_scores(metrics: Dict, output_dir: str = "plots") -> str:
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    logger.info(f"Per-class F1 scores plot saved to {output_path}")
+    console.print(f"[green]✓[/green] Per-class F1 scores plot saved to {output_path}")
     return str(output_path)
 
 def plot_confidence_analysis(df: pd.DataFrame, confidence_metrics: Dict, output_dir: str = "plots") -> str:
@@ -359,7 +357,7 @@ def plot_confidence_analysis(df: pd.DataFrame, confidence_metrics: Dict, output_
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    logger.info(f"Confidence analysis plot saved to {output_path}")
+    console.print(f"[green]✓[/green] Confidence analysis plot saved to {output_path}")
     return str(output_path)
 
 def generate_evaluation_report(df: pd.DataFrame, metrics: Dict, confidence_metrics: Dict, 
@@ -430,7 +428,7 @@ def generate_evaluation_report(df: pd.DataFrame, metrics: Dict, confidence_metri
         else:
             f.write("  No misclassifications found!\n")
     
-    logger.info(f"Evaluation report saved to {output_path}")
+    console.print(f"[green]✓[/green] Evaluation report saved to {output_path}")
     return output_path
 
 def evaluate_classification_results(csv_path: str, output_dir: str = "evaluation_results") -> Dict:
@@ -449,7 +447,7 @@ def evaluate_classification_results(csv_path: str, output_dir: str = "evaluation
     plots_dir = Path(output_dir) / "plots"
     plots_dir.mkdir(exist_ok=True)
     
-    logger.info(f"Starting evaluation of classification results from {csv_path}")
+    console.print(f"[blue]Starting evaluation[/blue] of classification results from [cyan]{csv_path}[/cyan]")
     
     # Load and clean data
     df = load_classification_results(csv_path)
@@ -487,9 +485,9 @@ def evaluate_classification_results(csv_path: str, output_dir: str = "evaluation
         'output_directory': output_dir
     }
     
-    logger.info("Evaluation completed successfully!")
-    logger.info(f"Results saved to: {output_dir}")
-    logger.info(f"Overall Accuracy: {metrics['accuracy']:.4f}")
-    logger.info(f"Macro F1 Score: {metrics['macro_f1']:.4f}")
+    console.print("✅ Evaluation completed successfully!", style="bold green")
+    console.print(f"📁 Results saved to: {output_dir}", style="cyan")
+    console.print(f"🎯 Overall Accuracy: {metrics['accuracy']:.4f}", style="bold blue")
+    console.print(f"📊 Macro F1 Score: {metrics['macro_f1']:.4f}", style="bold blue")
     
     return evaluation_results
