@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
 [![NCBI](https://img.shields.io/badge/Data-NCBI%20API-orange.svg)](https://ncbi.nlm.nih.gov)
 
-**BacClass** is an AI-powered classification tool that automatically categorizes bacterial biosample metadata from NCBI and ENA databases into **Clinical**, **Environmental**, or **Food** sources. Built with OpenAI's GPT models and designed for researchers working with bacterial genomics data, particularly Salmonella genome datasets.
+**BacClass** is an AI-powered classification tool that automatically categorizes bacterial biosample metadata from NCBI and ENA databases into different sources. 
 
 
 ## 📋 Classification Categories
